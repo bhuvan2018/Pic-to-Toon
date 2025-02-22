@@ -17,7 +17,7 @@ with open('./config.yaml', 'r') as fd:
 
 # Insert cartoonizer module path
 sys.path.insert(0, './white_box_cartoonizer/')
-from cartoonize import WB_Cartoonize
+from white_box_cartoonizer.cartoonize import WB_Cartoonize
 
 # Google Cloud setup (only if not running locally)
 if not opts['run_local']:
@@ -100,6 +100,15 @@ def generate_bar_graph(image, img_name, mode="original"):
     plt.close()
     return bar_graph_path
 
+def process_video_locally(video_path):
+    # Placeholder function for local video processing
+    # Implement your local video processing logic here
+    cartoonized_video_path = video_path.replace("uploaded_videos", "cartoonized_videos")
+    # For now, just copy the video to the cartoonized_videos folder
+    os.makedirs(os.path.dirname(cartoonized_video_path), exist_ok=True)
+    os.rename(video_path, cartoonized_video_path)
+    return cartoonized_video_path
+
 @app.route('/')
 @app.route('/cartoonize', methods=["POST", "GET"])
 def cartoonize():
@@ -150,35 +159,39 @@ def cartoonize():
                 video.save(video_path)
                 print(f"📂 Video uploaded: {video_path}")
 
-                # If running locally, video cartoonization is not available
-                if opts['run_local']:
-                    flash("Video cartoonization is only supported with Google Cloud setup.")
+                try:
+                    if opts.get('run_local', False):  # Allow both local and cloud processing
+                        # Implement local video processing function here
+                        cartoonized_video_path = process_video_locally(video_path)
+                        cartoonized_video_url = f"/static/cartoonized/{video_filename}"  # Adjust path as needed
+                    else:
+                        # Upload to cloud storage and get a public URL
+                        video_url = upload_blob(video_path, "cartoonized_videos/" + video_filename)
+                        # Process video via API (e.g., using Algorithmia or similar service)
+                        response = api_request(video_url)
+                        # Assume the API returns a URL to the cartoonized video
+                        cartoonized_video_url = response.get("output_uri")
+
+                    if not cartoonized_video_url:
+                        flash("Error processing video. Please try again.")
+                        return render_template("index_cartoonized.html")
+
+                    return render_template("index_cartoonized.html", 
+                                           original_video=video_url if not opts.get('run_local', False) else video_path, 
+                                           cartoonized_video=cartoonized_video_url)
+
+                except Exception:
+                    traceback.print_exc()
+                    flash("Error processing the image or video. Please try again.")
                     return render_template("index_cartoonized.html")
-
-                # Upload video to cloud storage and get a public URL
-                # (Assuming upload_blob returns a URL)
-                video_url = upload_blob(video_path, "cartoonized_videos/" + video_filename)
-                # Process video via API (e.g., using Algorithmia or similar service)
-                response = api_request(video_url)
-                # Assume the API returns a URL to the cartoonized video
-                cartoonized_video_url = response.get("output_uri")
-                if not cartoonized_video_url:
-                    flash("Error processing video. Please try again.")
-                    return render_template("index_cartoonized.html")
-
-                # Optionally, download the video locally if needed:
-                # cartoonized_video_path = download_video(...)
-
-                return render_template("index_cartoonized.html", 
-                                       original_video=video_url, 
-                                       cartoonized_video=cartoonized_video_url)
-
         except Exception:
             traceback.print_exc()
-            flash("Error processing the image or video. Please try again.")
+            flash("Error processing the request. Please try again.")
             return render_template("index_cartoonized.html")
     else:
         return render_template("index_cartoonized.html")
+
+
 
 if __name__ == "__main__":
     if opts['colab-mode']:
