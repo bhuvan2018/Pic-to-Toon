@@ -1,19 +1,9 @@
-import Algorithmia
+input_file_uri = "https://sample-videos.com/video123/mp4/720/big_buck_bunny_720p_1mb.mp4"
 
-with open("algo.txt", "r") as infile:
-   client_key = infile.read()
+response = algo.pipe({
+    "data_uri": input_file_uri,
+    "data_type": 1,
+    "datastore": None
+}).result
 
-client = Algorithmia.client(client_key)
-algo = client.algo('tjdevworks/cartoonizer/2.2.2')
-algo.set_options(timeout=300)
-
-def api_request(input_file_uri):
-    # API call for cartoonization.
-    input = {"data_uri": input_file_uri,
-            "data_type": 1,
-            "datastore": ""
-            }
-    
-    response = algo.pipe(input).result
-    
-    return response
+print(response)  # Check if the response contains an output URL

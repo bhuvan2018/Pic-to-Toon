@@ -59,6 +59,8 @@
               </div>
 
 
+              
+
 <div class='ui padded centered grid'>
     <!-- Messaging system -->
     <div class="row">
@@ -78,6 +80,8 @@
             {% endwith %}
         </div>
     </div>
+    
+
     
 
     <!-- Heading of the page -->
@@ -159,6 +163,39 @@
         </div>
     </div>
     {%endif%}
+
+    {% if orig_histogram and cartoon_histogram %}
+    <h3>Color Distribution & Intensity Analysis</h3>
+    
+    <div>
+        <h4>Original Image Histogram</h4>
+        <img src="{{ orig_histogram }}" width="400px">
+    </div>
+    <div>
+        <h4>Cartoonized Image Histogram</h4>
+        <img src="{{ cartoon_histogram }}" width="400px">
+    </div>
+
+    <div>
+        <h4>Original Image Pie Chart</h4>
+        <img src="{{ orig_pie_chart }}" width="400px">
+    </div>
+    <div>
+        <h4>Cartoonized Image Pie Chart</h4>
+        <img src="{{ cartoon_pie_chart }}" width="400px">
+    </div>
+
+    <div>
+        <h4>Original Image Bar Graph</h4>
+        <img src="{{ orig_bar_graph }}" width="400px">
+    </div>
+    <div>
+        <h4>Cartoonized Image Bar Graph</h4>
+        <img src="{{ cartoon_bar_graph }}" width="400px">
+    </div>
+{% endif %}
+
+
 
     <div class="ui divider"></div>
     <!-- Sample Images -->
