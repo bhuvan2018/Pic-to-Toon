@@ -167,6 +167,77 @@ h2 {
 body {
     background-color: rgb(29, 133, 162);
 }
+/* Center alignment for headings */
+.center.aligned.column {
+    text-align: center;
+    padding: 25px;
+}
+
+/* Main Heading */
+h1 {
+    font-size: 36px;
+    font-weight: bold;
+    color: #ffffff;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+    background: linear-gradient(135deg, #0061ff, #60efff);
+    padding: 12px 20px;
+    border-radius: 12px;
+    display: inline-block;
+    margin-bottom: 8px;
+    letter-spacing: 1px;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Subheading */
+h2 {
+    font-size: 22px;
+    font-weight: 500;
+    color: #e3f2fd;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+    padding: 8px 16px;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.15);
+    display: inline-block;
+    margin-bottom: 20px;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Adding smooth fade-in animation */
+h1, h2 {
+    opacity: 0;
+    transform: translateY(-10px);
+    animation: fadeInSlide 0.8s ease-out forwards;
+}
+
+@keyframes fadeInSlide {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Hover shining effect */
+h1::after, h2::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+    transition: left 0.7s ease-in-out;
+}
+
+h1:hover::after, h2:hover::after {
+    left: 100%;
+}
+
     </style>
 </head>
 
