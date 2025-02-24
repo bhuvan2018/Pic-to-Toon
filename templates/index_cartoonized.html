@@ -346,6 +346,65 @@ input[type="file"] {
 body {
     background-color: rgb(29, 133, 162);
 }
+/* Footer Styling */
+.center.aligned.column h3 {
+    font-size: 18px;
+    font-weight: bold;
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 12px 20px;
+    border-radius: 10px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s, box-shadow 0.3s, background 0.3s;
+    cursor: default;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Footer Hover Shine Effect */
+.center.aligned.column h3::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    transition: left 0.7s ease-in-out;
+}
+
+.center.aligned.column h3:hover::after {
+    left: 100%;
+}
+
+.center.aligned.column h3:hover {
+    transform: scale(1.05);
+    background: rgba(255, 255, 255, 0.15);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Copyright Icon */
+.copyright.outline.icon {
+    font-size: 20px;
+    color: #ffd700;
+    animation: pulse 1.5s infinite alternate;
+}
+
+/* Subtle glowing effect */
+@keyframes pulse {
+    from {
+        transform: scale(1);
+        opacity: 0.8;
+    }
+    to {
+        transform: scale(1.1);
+        opacity: 1;
+    }
+}
+
 
     </style>
 </head>
