@@ -522,34 +522,52 @@ body {
     {%endif%}
 
     {% if orig_histogram and cartoon_histogram %}
-    <h3>Color Distribution & Intensity Analysis</h3> <br>
+    <div style="text-align: center; margin-bottom: 30px;">
+        <h3 style="font-size: 26px; font-weight: bold; color: #007bff; text-transform: uppercase;
+                   letter-spacing: 1px; padding: 15px; border-bottom: 3px solid #007bff; display: inline-block;">
+            Color Distribution & Intensity Analysis
+        </h3>
+    </div>
     
-    <div>
-        <h4>Original Image Histogram</h4>
-        <img src="{{ orig_histogram }}" width="400px">
-    </div>
-    <div>
-        <h4>Cartoonized Image Histogram</h4>
-        <img src="{{ cartoon_histogram }}" width="400px">
-    </div>
-
-    <div>
-        <h4>Original Image Pie Chart</h4>
-        <img src="{{ orig_pie_chart }}" width="400px">
-    </div>
-    <div>
-        <h4>Cartoonized Image Pie Chart</h4>
-        <img src="{{ cartoon_pie_chart }}" width="400px">
-    </div>
-
-    <div>
-        <h4>Original Image Bar Graph</h4>
-        <img src="{{ orig_bar_graph }}" width="400px">
-    </div>
-    <div>
-        <h4>Cartoonized Image Bar Graph</h4>
-        <img src="{{ cartoon_bar_graph }}" width="400px">
-    </div>
+    <div style="display: flex; flex-direction: column; align-items: center; gap: 40px;">
+    
+        <div style="text-align: center;">
+            <h4 style="color: #222; font-size: 22px; margin-bottom: 10px;">Original Image Histogram</h4>
+            <img src="{{ orig_histogram }}" width="460px" 
+                 style="border-radius: 12px; box-shadow: 0px 5px 12px rgba(0, 0, 0, 0.2);">
+        </div>
+    
+        <div style="text-align: center;">
+            <h4 style="color: #222; font-size: 22px; margin-bottom: 10px;">Cartoonized Image Histogram</h4>
+            <img src="{{ cartoon_histogram }}" width="460px" 
+                 style="border-radius: 12px; box-shadow: 0px 5px 12px rgba(0, 0, 0, 0.2);">
+        </div>
+    
+        <div style="text-align: center;">
+            <h4 style="color: #222; font-size: 22px; margin-bottom: 10px;">Original Image Pie Chart</h4>
+            <img src="{{ orig_pie_chart }}" width="400px" 
+                 style="border-radius: 12px; box-shadow: 0px 5px 12px rgba(0, 0, 0, 0.2);">
+        </div>
+    
+        <div style="text-align: center;">
+            <h4 style="color: #222; font-size: 22px; margin-bottom: 10px;">Cartoonized Image Pie Chart</h4>
+            <img src="{{ cartoon_pie_chart }}" width="400px" 
+                 style="border-radius: 12px; box-shadow: 0px 5px 12px rgba(0, 0, 0, 0.2);">
+        </div>
+    
+        <div style="text-align: center;">
+            <h4 style="color: #222; font-size: 22px; margin-bottom: 10px;">Original Image Bar Graph</h4>
+            <img src="{{ orig_bar_graph }}" width="460px" 
+                 style="border-radius: 12px; box-shadow: 0px 5px 12px rgba(0, 0, 0, 0.2);">
+        </div>
+    
+        <div style="text-align: center;">
+            <h4 style="color: #222; font-size: 22px; margin-bottom: 10px;">Cartoonized Image Bar Graph</h4>
+            <img src="{{ cartoon_bar_graph }}" width="460px" 
+                 style="border-radius: 12px; box-shadow: 0px 5px 12px rgba(0, 0, 0, 0.2);">
+        </div>
+    
+    </div>    
 {% endif %}
 
 
