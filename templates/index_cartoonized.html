@@ -113,6 +113,7 @@
 
 .ui.button i {
     font-size: 20px;
+    color: #222;
 }
 
 .ui.button:hover {
@@ -527,7 +528,7 @@ body {
                                 <i class="download icon"></i>
                                 Download
                             </button><br>
-                            (Valid for 5 minutes only!)
+                            <span style="color: black; font-weight: bold; font-size: larger; text-decoration: underline; background-color: rgb(115, 0, 255);">(Valid for 5 minutes only!)</span>
                         </a>
                     {%endif%}
                     
@@ -539,55 +540,58 @@ body {
     {%endif%}
 
     {% if orig_histogram and cartoon_histogram %}
-    <div style="text-align: center; margin-bottom: 30px;">
-        <h3 style="font-size: 26px; font-weight: bold; color: #007bff; text-transform: uppercase;
-                   letter-spacing: 1px; padding: 15px; border-bottom: 3px solid #007bff; display: inline-block;">
+    <div style="text-align: center; margin: 0 auto 30px;">
+        <h3 style="font-size: 26px; font-weight: bold; color: #e5eaef; text-transform: uppercase; letter-spacing: 1px; padding: 15px; border-bottom: 3px solid #007bff; display: inline-block;">
             Color Distribution & Intensity Analysis
         </h3>
-    </div>
-    
-    <div style="display: flex; flex-direction: column; align-items: center; gap: 40px;">
-    
+    </div>    
+
+    <!-- Histograms Side by Side -->
+    <div style="display: flex; justify-content: center; gap: 40px; margin-bottom: 30px;">
         <div style="text-align: center;">
             <h4 style="color: #222; font-size: 22px; margin-bottom: 10px;">Original Image Histogram</h4>
             <img src="{{ orig_histogram }}" width="460px" 
                  style="border-radius: 12px; box-shadow: 0px 5px 12px rgba(0, 0, 0, 0.2);">
         </div>
-    
+
         <div style="text-align: center;">
             <h4 style="color: #222; font-size: 22px; margin-bottom: 10px;">Cartoonized Image Histogram</h4>
             <img src="{{ cartoon_histogram }}" width="460px" 
                  style="border-radius: 12px; box-shadow: 0px 5px 12px rgba(0, 0, 0, 0.2);">
         </div>
-    
+    </div>    
+
+    <!-- Pie Charts Centered Below -->
+    <div style="display: flex; justify-content: center; gap: 40px; margin-bottom: 30px;">
         <div style="text-align: center;">
             <h4 style="color: #222; font-size: 22px; margin-bottom: 10px;">Original Image Pie Chart</h4>
             <img src="{{ orig_pie_chart }}" width="400px" 
                  style="border-radius: 12px; box-shadow: 0px 5px 12px rgba(0, 0, 0, 0.2);">
         </div>
-    
+
         <div style="text-align: center;">
             <h4 style="color: #222; font-size: 22px; margin-bottom: 10px;">Cartoonized Image Pie Chart</h4>
             <img src="{{ cartoon_pie_chart }}" width="400px" 
                  style="border-radius: 12px; box-shadow: 0px 5px 12px rgba(0, 0, 0, 0.2);">
         </div>
-    
+    </div>
+
+    <!-- Bar Graphs Centered Below -->
+    <div style="display: flex; justify-content: center; gap: 40px; margin-bottom: 30px;">
         <div style="text-align: center;">
             <h4 style="color: #222; font-size: 22px; margin-bottom: 10px;">Original Image Bar Graph</h4>
             <img src="{{ orig_bar_graph }}" width="460px" 
                  style="border-radius: 12px; box-shadow: 0px 5px 12px rgba(0, 0, 0, 0.2);">
         </div>
-    
+
         <div style="text-align: center;">
             <h4 style="color: #222; font-size: 22px; margin-bottom: 10px;">Cartoonized Image Bar Graph</h4>
             <img src="{{ cartoon_bar_graph }}" width="460px" 
                  style="border-radius: 12px; box-shadow: 0px 5px 12px rgba(0, 0, 0, 0.2);">
         </div>
-    
     </div>    
+
 {% endif %}
-
-
 
     <div class="ui divider"></div>
     <!-- Sample Images -->
