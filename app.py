@@ -108,8 +108,6 @@ def cartoonize():
                 img = request.files["image"].read()
                 image = convert_bytes_to_image(img)
                 img_name = str(uuid.uuid4())
-
-                # Generate visualizations for the original image
                 orig_hist_path = generate_histogram(image, img_name, "original")
                 orig_pie_path = generate_pie_chart(image, img_name, "original")
                 orig_bar_path = generate_bar_graph(image, img_name, "original")
