@@ -94,7 +94,6 @@ def generate_bar_graph(image, img_name, mode="original"):
 
 def process_video_locally(video_path):
     cartoonized_video_path = video_path.replace("uploaded_videos", "cartoonized_videos")
-    # For now, just copy the video to the cartoonized_videos folder
     os.makedirs(os.path.dirname(cartoonized_video_path), exist_ok=True)
     os.rename(video_path, cartoonized_video_path)
     return cartoonized_video_path
