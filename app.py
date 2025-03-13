@@ -160,7 +160,7 @@ def cartoonize():
                 print(f"📂 Video uploaded: {video_path}")
 
                 try:
-                    if opts.get('run_local', False):  # Allow both local and cloud processing
+                    if opts.get('run_local', False):
                         # Implement local video processing function here
                         cartoonized_video_path = process_video_locally(video_path)
                         cartoonized_video_url = f"/static/cartoonized/{video_filename}"  # Adjust path as needed
