@@ -125,10 +125,6 @@ def cartoonize():
                                        cartoon_histogram=cartoon_hist_path,
                                        cartoon_pie_chart=cartoon_pie_path,
                                        cartoon_bar_graph=cartoon_bar_path)
-
-            # --------------------
-            # Video Cartoonization
-            # --------------------
             elif request.files.get('video'):
                 video = request.files["video"]
                 video_filename = str(uuid.uuid4()) + ".mp4"
