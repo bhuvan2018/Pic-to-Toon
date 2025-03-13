@@ -114,8 +114,6 @@ def cartoonize():
                 cartoon_image = wb_cartoonizer.infer(image)
                 cartoonized_img_name = os.path.join(app.config['CARTOONIZED_FOLDER'], img_name + ".jpg")
                 cv2.imwrite(cartoonized_img_name, cv2.cvtColor(cartoon_image, cv2.COLOR_RGB2BGR))
-
-                # Generate visualizations for the cartoonized image
                 cartoon_hist_path = generate_histogram(cartoon_image, img_name, "cartoonized")
                 cartoon_pie_path = generate_pie_chart(cartoon_image, img_name, "cartoonized")
                 cartoon_bar_path = generate_bar_graph(cartoon_image, img_name, "cartoonized")
