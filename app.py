@@ -165,7 +165,6 @@ def cartoonize():
                         cartoonized_video_url = f"/static/cartoonized/{video_filename}"
                     else:
                         video_url = upload_blob(video_path, "cartoonized_videos/" + video_filename)
-                        
                         response = api_request(video_url)
                         # Assume the API returns a URL to the cartoonized video
                         cartoonized_video_url = response.get("output_uri")
