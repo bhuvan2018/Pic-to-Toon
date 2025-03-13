@@ -104,9 +104,6 @@ def cartoonize():
     opts = app.config['OPTS']
     if request.method == 'POST':
         try:
-            # --------------------
-            # Image Cartoonization
-            # --------------------
             if request.files.get('image'):
                 img = request.files["image"].read()
                 image = convert_bytes_to_image(img)
