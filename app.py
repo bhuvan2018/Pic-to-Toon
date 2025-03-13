@@ -25,7 +25,7 @@ if not opts['run_local']:
     from video_api import api_request
 
 app = Flask(__name__)
-app.secret_key = 'my_super_secret_key_123!'  # Use a strong secret key in production
+app.secret_key = 'my_super_secret_key_123!'
 
 # Define folder paths for uploads and outputs
 app.config['UPLOAD_FOLDER_IMAGES'] = 'static/uploaded_images'
