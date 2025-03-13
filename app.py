@@ -24,7 +24,6 @@ if not opts['run_local']:
         raise Exception("GOOGLE_APPLICATION_CREDENTIALS not set in environment variables")
     from video_api import api_request
 
-# Initialize Flask app
 app = Flask(__name__)
 # Set a secret key for session management (flash messages, etc.)
 app.secret_key = 'my_super_secret_key_123!'  # Use a strong secret key in production
