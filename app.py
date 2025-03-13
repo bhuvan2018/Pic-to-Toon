@@ -170,7 +170,6 @@ def cartoonize():
                     if not cartoonized_video_url:
                         flash("Error processing video. Please try again.")
                         return render_template("index_cartoonized.html")
-
                     return render_template("index_cartoonized.html", 
                                            original_video=video_url if not opts.get('run_local', False) else video_path, 
                                            cartoonized_video=cartoonized_video_url)
