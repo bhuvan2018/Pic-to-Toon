@@ -25,7 +25,6 @@ if not opts['run_local']:
     from video_api import api_request
 
 app = Flask(__name__)
-# Set a secret key for session management (flash messages, etc.)
 app.secret_key = 'my_super_secret_key_123!'  # Use a strong secret key in production
 
 # Define folder paths for uploads and outputs
