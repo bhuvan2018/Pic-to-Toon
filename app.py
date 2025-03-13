@@ -112,8 +112,6 @@ def cartoonize():
                 orig_pie_path = generate_pie_chart(image, img_name, "original")
                 orig_bar_path = generate_bar_graph(image, img_name, "original")
                 cartoon_image = wb_cartoonizer.infer(image)
-
-                # Save the cartoonized image
                 cartoonized_img_name = os.path.join(app.config['CARTOONIZED_FOLDER'], img_name + ".jpg")
                 cv2.imwrite(cartoonized_img_name, cv2.cvtColor(cartoon_image, cv2.COLOR_RGB2BGR))
 
