@@ -22,7 +22,7 @@ if not opts['run_local']:
         from gcloud_utils import upload_blob, generate_signed_url, delete_blob, download_video
     else:
         raise Exception("GOOGLE_APPLICATION_CREDENTIALS not set in environment variables")
-    from video_api import api_request  # Your video cartoonization API using Algorithmia or similar
+    from video_api import api_request
 
 # Initialize Flask app
 app = Flask(__name__)
