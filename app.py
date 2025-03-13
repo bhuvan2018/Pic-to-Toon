@@ -27,7 +27,6 @@ if not opts['run_local']:
 app = Flask(__name__)
 app.secret_key = 'my_super_secret_key_123!'
 
-# Define folder paths for uploads and outputs
 app.config['UPLOAD_FOLDER_IMAGES'] = 'static/uploaded_images'
 app.config['UPLOAD_FOLDER_VIDEOS'] = 'static/uploaded_videos'
 app.config['CARTOONIZED_FOLDER'] = 'static/cartoonized_images'
