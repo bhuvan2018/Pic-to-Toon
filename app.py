@@ -131,7 +131,6 @@ def cartoonize():
                 video_path = os.path.join(app.config['UPLOAD_FOLDER_VIDEOS'], video_filename)
                 video.save(video_path)
                 print(f"📂 Video uploaded: {video_path}")
-
                 try:
                     if opts.get('run_local', False):
                         cartoonized_video_path = process_video_locally(video_path)
