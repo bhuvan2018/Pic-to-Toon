@@ -111,8 +111,6 @@ def cartoonize():
                 orig_hist_path = generate_histogram(image, img_name, "original")
                 orig_pie_path = generate_pie_chart(image, img_name, "original")
                 orig_bar_path = generate_bar_graph(image, img_name, "original")
-
-                # Apply cartoonization
                 cartoon_image = wb_cartoonizer.infer(image)
 
                 # Save the cartoonized image
