@@ -164,7 +164,6 @@ def cartoonize():
                         cartoonized_video_path = process_video_locally(video_path)
                         cartoonized_video_url = f"/static/cartoonized/{video_filename}"
                     else:
-                        
                         video_url = upload_blob(video_path, "cartoonized_videos/" + video_filename)
                         # Process video via API (e.g., using Algorithmia or similar service)
                         response = api_request(video_url)
