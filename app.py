@@ -155,7 +155,6 @@ def cartoonize():
             return render_template("index_cartoonized.html")
     else:
         return render_template("index_cartoonized.html")
-
 if __name__ == "__main__":
     if opts['colab-mode']:
         app.run()
