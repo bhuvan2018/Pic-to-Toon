@@ -167,7 +167,6 @@ def cartoonize():
                         video_url = upload_blob(video_path, "cartoonized_videos/" + video_filename)
                         response = api_request(video_url)
                         cartoonized_video_url = response.get("output_uri")
-
                     if not cartoonized_video_url:
                         flash("Error processing video. Please try again.")
                         return render_template("index_cartoonized.html")
