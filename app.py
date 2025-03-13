@@ -117,7 +117,6 @@ def cartoonize():
                 cartoon_hist_path = generate_histogram(cartoon_image, img_name, "cartoonized")
                 cartoon_pie_path = generate_pie_chart(cartoon_image, img_name, "cartoonized")
                 cartoon_bar_path = generate_bar_graph(cartoon_image, img_name, "cartoonized")
-
                 return render_template("index_cartoonized.html", 
                                        cartoonized_image=cartoonized_img_name,
                                        orig_histogram=orig_hist_path,
