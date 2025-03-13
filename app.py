@@ -32,7 +32,6 @@ app.config['UPLOAD_FOLDER_VIDEOS'] = 'static/uploaded_videos'
 app.config['CARTOONIZED_FOLDER'] = 'static/cartoonized_images'
 app.config['OPTS'] = opts
 
-# Initialize cartoonizer (ensure the model weights are available at the specified path)
 wb_cartoonizer = WB_Cartoonize(os.path.abspath("white_box_cartoonizer/saved_models/"), opts['gpu'])
 
 # Ensure required directories exist
