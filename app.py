@@ -11,7 +11,6 @@ import seaborn as sns
 from flask import Flask, render_template, request, flash
 from PIL import Image
 
-# Load configuration
 with open('./config.yaml', 'r') as fd:
     opts = yaml.safe_load(fd)
 
