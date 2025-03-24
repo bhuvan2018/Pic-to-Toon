@@ -33,7 +33,6 @@ app.config['CARTOONIZED_FOLDER'] = 'static/cartoonized_images'
 app.config['OPTS'] = opts
 
 wb_cartoonizer = WB_Cartoonize(os.path.abspath("white_box_cartoonizer/saved_models/"), opts['gpu'])
-
 for folder in [app.config['UPLOAD_FOLDER_IMAGES'], app.config['UPLOAD_FOLDER_VIDEOS'], app.config['CARTOONIZED_FOLDER']]:
     os.makedirs(folder, exist_ok=True)
 
