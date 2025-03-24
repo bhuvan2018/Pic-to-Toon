@@ -23,7 +23,6 @@ if not opts['run_local']:
     else:
         raise Exception("GOOGLE_APPLICATION_CREDENTIALS not set in environment variables")
     from video_api import api_request
-
 app = Flask(__name__)
 app.secret_key = 'my_super_secret_key_123!'
 app.config['UPLOAD_FOLDER_IMAGES'] = 'static/uploaded_images'
