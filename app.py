@@ -13,7 +13,6 @@ from PIL import Image
 
 with open('./config.yaml', 'r') as fd:
     opts = yaml.safe_load(fd)
-
 sys.path.insert(0, './white_box_cartoonizer/')
 from white_box_cartoonizer.cartoonize import WB_Cartoonize
 if not opts['run_local']:
