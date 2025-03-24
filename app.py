@@ -16,7 +16,6 @@ with open('./config.yaml', 'r') as fd:
 
 sys.path.insert(0, './white_box_cartoonizer/')
 from white_box_cartoonizer.cartoonize import WB_Cartoonize
-
 if not opts['run_local']:
     if 'GOOGLE_APPLICATION_CREDENTIALS' in os.environ:
         from gcloud_utils import upload_blob, generate_signed_url, delete_blob, download_video
