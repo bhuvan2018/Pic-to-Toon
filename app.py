@@ -10,7 +10,6 @@ import numpy as np
 import seaborn as sns
 from flask import Flask, render_template, request, flash
 from PIL import Image
-
 with open('./config.yaml', 'r') as fd:
     opts = yaml.safe_load(fd)
 sys.path.insert(0, './white_box_cartoonizer/')
