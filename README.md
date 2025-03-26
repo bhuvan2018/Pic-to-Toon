@@ -1,4 +1,4 @@
-# Cartoon
+# Pic-to-Toon
 
 ## Installation
 
