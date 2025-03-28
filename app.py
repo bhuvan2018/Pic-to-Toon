@@ -53,7 +53,6 @@ def generate_histogram(image, img_name, mode="original"):
     plt.savefig(hist_path)
     plt.close()
     return hist_path
-
 def generate_pie_chart(image, img_name, mode="original"):
     """Generate and save a pie chart showing the average color distribution."""
     avg_colors = np.mean(image, axis=(0, 1))
