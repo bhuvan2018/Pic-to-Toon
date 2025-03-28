@@ -85,7 +85,6 @@ def process_video_locally(video_path):
     os.makedirs(os.path.dirname(cartoonized_video_path), exist_ok=True)
     os.rename(video_path, cartoonized_video_path)
     return cartoonized_video_path
-
 @app.route('/')
 @app.route('/cartoonize', methods=["POST", "GET"])
 def cartoonize():
