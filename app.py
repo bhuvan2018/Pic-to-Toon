@@ -38,7 +38,6 @@ def convert_bytes_to_image(img_bytes):
     else:
         image = pil_image.convert('RGB')
     return np.array(image)
-
 def generate_histogram(image, img_name, mode="original"):
     """Generate and save a histogram for RGB channels."""
     plt.figure(figsize=(8, 4))
