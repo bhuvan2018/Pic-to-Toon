@@ -80,7 +80,6 @@ def generate_bar_graph(image, img_name, mode="original"):
     plt.savefig(bar_graph_path)
     plt.close()
     return bar_graph_path
-
 def process_video_locally(video_path):
     cartoonized_video_path = video_path.replace("uploaded_videos", "cartoonized_videos")
     os.makedirs(os.path.dirname(cartoonized_video_path), exist_ok=True)
