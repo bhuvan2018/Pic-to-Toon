@@ -65,7 +65,6 @@ def generate_pie_chart(image, img_name, mode="original"):
     plt.savefig(pie_chart_path)
     plt.close()
     return pie_chart_path
-
 def generate_bar_graph(image, img_name, mode="original"):
     """Generate and save a bar graph of the average RGB intensities."""
     avg_colors = np.mean(image, axis=(0, 1))
