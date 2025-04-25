@@ -2,6 +2,7 @@ import os
 import io
 import uuid
 import sys
+import flet
 import yaml
 import traceback
 import cv2
