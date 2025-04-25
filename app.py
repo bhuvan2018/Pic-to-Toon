@@ -10,6 +10,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import seaborn as sns
 from PIL import Image
+import shutil
 
 # Load configuration
 with open('./config.yaml', 'r') as fd:
@@ -19,36 +20,17 @@ with open('./config.yaml', 'r') as fd:
 sys.path.insert(0, './white_box_cartoonizer/')
 from white_box_cartoonizer.cartoonize import WB_Cartoonize
 
-# Configure cloud services if needed
-if not opts['run_local']:
-    if 'GOOGLE_APPLICATION_CREDENTIALS' in os.environ:
-        from gcloud_utils import upload_blob, generate_signed_url, delete_blob, download_video
-    else:
-        print("GOOGLE_APPLICATION_CREDENTIALS not set in environment variables")
-    from video_api import api_request
-
 # Initialize cartoonizer
 wb_cartoonizer = WB_Cartoonize(os.path.abspath("white_box_cartoonizer/saved_models/"), opts['gpu'])
 
 # Create directories
 UPLOAD_FOLDER_IMAGES = 'static/uploaded_images'
-UPLOAD_FOLDER_VIDEOS = 'static/uploaded_videos'
 CARTOONIZED_FOLDER = 'static/cartoonized_images'
 
-for folder in [UPLOAD_FOLDER_IMAGES, UPLOAD_FOLDER_VIDEOS, CARTOONIZED_FOLDER]:
+for folder in [UPLOAD_FOLDER_IMAGES, CARTOONIZED_FOLDER]:
     os.makedirs(folder, exist_ok=True)
 
 # Helper functions
-def convert_bytes_to_image(img_bytes):
-    """Convert image bytes to a NumPy array."""
-    pil_image = Image.open(io.BytesIO(img_bytes))
-    if pil_image.mode == "RGBA":
-        image = Image.new("RGB", pil_image.size, (255, 255, 255))
-        image.paste(pil_image, mask=pil_image.split()[3])
-    else:
-        image = pil_image.convert('RGB')
-    return np.array(image)
-
 def generate_histogram(image, img_name, mode="original"):
     """Generate and save a histogram for RGB channels."""
     plt.figure(figsize=(8, 4))
@@ -93,12 +75,6 @@ def generate_bar_graph(image, img_name, mode="original"):
     plt.savefig(bar_graph_path)
     plt.close()
     return bar_graph_path
-
-def process_video_locally(video_path):
-    cartoonized_video_path = video_path.replace("uploaded_videos", "cartoonized_videos")
-    os.makedirs(os.path.dirname(cartoonized_video_path), exist_ok=True)
-    os.rename(video_path, cartoonized_video_path)
-    return cartoonized_video_path
 
 # Main app function
 def main(page: ft.Page):
@@ -175,6 +151,9 @@ def main(page: ft.Page):
     # Function to handle image processing
     def process_image(e: ft.FilePickerResultEvent):
         if not e.files or len(e.files) == 0:
+            status_message.value = "No file selected"
+            status_message.visible = True
+            page.update()
             return
         
         try:
@@ -190,13 +169,43 @@ def main(page: ft.Page):
             bar_graph_container.visible = False
             page.update()
             
-            # Read the file
+            # For mobile compatibility, save to a temporary file first
             file_path = e.files[0].path
-            with open(file_path, "rb") as f:
-                img_bytes = f.read()
+            
+            if not file_path:
+                raise Exception("Failed to get image file path")
                 
-            # Process the image
-            image = convert_bytes_to_image(img_bytes)
+            # Create a temporary file path in our uploaded_images folder
+            img_filename = str(uuid.uuid4()) + os.path.splitext(file_path)[1]
+            temp_path = os.path.join(UPLOAD_FOLDER_IMAGES, img_filename)
+            
+            # Copy the file to our temporary location where we can access it
+            shutil.copy2(file_path, temp_path)
+            
+            # Now read the image from our temporary location
+            image = cv2.imread(temp_path)
+            if image is None:
+                # If still can't read, try with PIL as a fallback
+                try:
+                    pil_image = Image.open(temp_path)
+                    image = np.array(pil_image)
+                    if len(image.shape) == 3 and image.shape[2] == 3:
+                        # Already RGB
+                        pass
+                    elif len(image.shape) == 3 and image.shape[2] == 4:
+                        # Convert RGBA to RGB
+                        pil_image = Image.open(temp_path).convert('RGB')
+                        image = np.array(pil_image)
+                    else:
+                        # Convert grayscale to RGB
+                        pil_image = Image.open(temp_path).convert('RGB')
+                        image = np.array(pil_image)
+                except Exception as pil_err:
+                    raise Exception(f"Failed to read image with both OpenCV and PIL: {str(pil_err)}")
+            else:
+                # Convert BGR to RGB
+                image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+            
             img_name = str(uuid.uuid4())
             
             # Generate original analysis
@@ -277,7 +286,7 @@ def main(page: ft.Page):
                         ),
                         on_click=show_bar_graph
                     )
-                ], alignment=ft.MainAxisAlignment.CENTER, spacing=10)
+                ], alignment=ft.MainAxisAlignment.CENTER, spacing=10, wrap=True)
             ], alignment=ft.MainAxisAlignment.CENTER)
             visualization_buttons.visible = True
             
@@ -329,103 +338,11 @@ def main(page: ft.Page):
             print(traceback.format_exc())
             page.update()
     
-    # Function to handle video processing
-    def process_video(e: ft.FilePickerResultEvent):
-        if not e.files or len(e.files) == 0:
-            return
-        
-        try:
-            # Show loading
-            loading.visible = True
-            status_message.value = "Processing your video..."
-            status_message.visible = True
-            page.update()
-            
-            # Hide any visualization containers
-            visualization_buttons.visible = False
-            histogram_container.visible = False
-            pie_chart_container.visible = False
-            bar_graph_container.visible = False
-            page.update()
-            
-            # Read the file
-            file_path = e.files[0].path
-            file_size = os.path.getsize(file_path) / 1024  # KB
-            max_file_size = 30720  # 30MB in KB
-            
-            if file_size >= max_file_size:
-                loading.visible = False
-                status_message.value = "File too Big, please select a file less than 30MB"
-                status_message.color = ft.colors.RED_ACCENT
-                status_message.visible = True
-                page.update()
-                return
-            
-            # Process the video
-            video_filename = str(uuid.uuid4()) + ".mp4"
-            video_path = os.path.join(UPLOAD_FOLDER_VIDEOS, video_filename)
-            
-            # Copy the file to our upload folder
-            with open(file_path, "rb") as src, open(video_path, "wb") as dst:
-                dst.write(src.read())
-            
-            if opts.get('run_local', False):
-                cartoonized_video_path = process_video_locally(video_path)
-                cartoonized_video_url = f"/static/cartoonized/{video_filename}"
-            else:
-                video_url = upload_blob(video_path, "cartoonized_videos/" + video_filename)
-                response = api_request(video_url)
-                cartoonized_video_url = response.get("output_uri")
-            
-            if not cartoonized_video_url:
-                loading.visible = False
-                status_message.value = "Error processing video. Please try again."
-                status_message.color = ft.colors.RED_ACCENT
-                status_message.visible = True
-                page.update()
-                return
-            
-            # Update the UI with results
-            cartoonized_result.content = ft.Column([
-                ft.Text("Cartoonized Video", size=22, color=ft.colors.WHITE),
-                ft.Container(
-                    content=ft.Video(
-                        src=cartoonized_video_url,
-                        width=500,
-                        height=320,
-                        autoplay=False,
-                        controls=True
-                    ),
-                    border_radius=10
-                ),
-                ft.FilledButton(
-                    text="Download",
-                    icon=ft.icons.DOWNLOAD,
-                    on_click=lambda _: page.launch_url(cartoonized_video_url)
-                )
-            ], alignment=ft.MainAxisAlignment.CENTER, horizontal_alignment=ft.CrossAxisAlignment.CENTER)
-            cartoonized_result.visible = True
-            
-            # Hide loading and update
-            loading.visible = False
-            status_message.value = "Your cartoonized video is ready!"
-            page.update()
-            
-        except Exception as e:
-            # Handle errors
-            loading.visible = False
-            status_message.value = f"Error: {str(e)}"
-            status_message.color = ft.colors.RED_ACCENT
-            status_message.visible = True
-            print(traceback.format_exc())
-            page.update()
-    
-    # Set up file pickers
+    # Set up file picker for mobile compatibility
     image_picker = ft.FilePicker(on_result=process_image)
-    video_picker = ft.FilePicker(on_result=process_video)
-    page.overlay.extend([image_picker, video_picker])
+    page.overlay.extend([image_picker])
     
-    # Create upload buttons
+    # Create upload button
     upload_container = ft.Column([
         ft.ElevatedButton(
             content=ft.Row([
@@ -448,7 +365,7 @@ def main(page: ft.Page):
     # Create sample images section
     sample_section = ft.Column([
         ft.Divider(height=2, color=ft.colors.WHITE24),
-        ft.Text("Sample Images", size=24, color=ft.colors.WHITE, text_align=ft.TextAlign.CENTER),
+        ft.Text("", size=24, color=ft.colors.WHITE, text_align=ft.TextAlign.CENTER),
         ft.ResponsiveRow([
             ft.Column([
                 ft.Image(
